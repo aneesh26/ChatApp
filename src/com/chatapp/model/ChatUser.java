@@ -3,7 +3,7 @@ package com.chatapp.model;
 public class ChatUser {
 	String name;
 
-	public ChatUser(String name, String status, long contact, String email) {
+	public ChatUser(String name, String status, String contact, String email) {
 		super();
 		this.name = name;
 		this.status = status;
@@ -32,11 +32,11 @@ public class ChatUser {
 		this.status = status;
 	}
 
-	public long getContact() {
+	public String getContact() {
 		return contact;
 	}
 
-	public void setContact(long contact) {
+	public void setContact(String contact) {
 		this.contact = contact;
 	}
 
@@ -49,7 +49,7 @@ public class ChatUser {
 	}
 
 	String status;
-	long contact;
+	String contact;
 	String email;
 
 }
