@@ -3,6 +3,10 @@ package com.chatapp.model;
 import java.sql.Date;
 
 public class ChatMessage {
+	public ChatMessage() {
+		super();
+	}
+
 	String message;
 	Date sentTime;
 	ChatUser fromUser;
