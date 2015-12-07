@@ -17,7 +17,7 @@ import com.chatapp.model.RestData;
 
 @Controller
 
-@RequestMapping("/test")
+@RequestMapping("/rest")
 
 
 
@@ -35,12 +35,13 @@ public class RestController {
 	@ResponseBody
 	public RestData getMessage(){
 		restData = new RestData();
-		restData.getServerData().put("message", newMessage);
+		//restData.getServerData().put("message", newMessage);
 		
 		List<Message> list = messageDao.getAllMessages();
-		
+		restData.getServerData().put("messageList", list);
 		for(Message msg : list){
 			System.out.println(msg.toString());
+			
 		}
 		
 		

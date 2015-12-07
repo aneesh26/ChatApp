@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd 
+						http://www.springframework.org/schema/security
+						http://www.springframework.org/schema/security/spring-security.xsd">
+
+
+
+
+
+
+	<!-- Security configuration for REST services. -->
+	<security:http pattern="/rest/**"
+		authentication-manager-ref="authenticationManager" entry-point-ref="restAuthenticationEntryPoint"
+		create-session="stateless">
+		<security:csrf disabled="true"/>
+		<security:custom-filter ref="restServicesFilter"
+			before="PRE_AUTH_FILTER" />
+	</security:http>
+	<!-- Entry point for REST service. -->
+	<bean id="restAuthenticationEntryPoint" class="com.chatapp.security.RestAuthenticationEntryPoint">
+	</bean>
+	<!-- Filter for REST services. -->
+	<bean id="restServicesFilter"
+		class="com.chatapp.security.RestUsernamePasswordAuthenticationFilter">
+		<property name="postOnly" value="false" />
+		<property name="authenticationManager" ref="authenticationManager" />
+		<property name="authenticationSuccessHandler" ref="myRestSuccessHandler" />
+	</bean>
+	<!-- A handler for successful REST service authentication. -->
+	<bean id="myRestSuccessHandler" class="com.chatapp.security.MyRestAuthenticationSuccessHandler" />
+	<bean id="myRestFailureHandler"
+		class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler" />
+
+	<!-- Security configuration for other resources. Use login form. -->
+
+	<security:http>
+	 	<security:csrf disabled="true"/>
+		<security:intercept-url pattern="/"
+			access="isAuthenticated()" />
+		<security:intercept-url pattern="/test/**"
+			access="permitAll" />
+		<security:intercept-url pattern="/**"
+			access="denyAll" />
+		<security:form-login />
+	</security:http>
+
+
+
+	<security:authentication-manager alias="authenticationManager">
+		<security:authentication-provider>
+			<security:user-service>
+				<security:user name="admin" authorities="ROLE_ADMIN"
+					password="123456" />
+				<security:user name="regular" authorities="ROLE_USER"
+					password="123456" />
+			</security:user-service>
+		</security:authentication-provider>
+	</security:authentication-manager>
+</beans>
